@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+#
+# Execute Php-cs-fixer après le commit.
+#
+# Nécessite php-cs-fixer.phar installé comme dépendance composer
+#
+
+git status --porcelain | grep -e '^[AM]\(.*\).php$' | cut -c 3- | while read line; do
+    docker-compose exec php5 bash 
+    vendor/bin/php-cs-fixer fix pages;
+    git add "$line";
+done
+
+cd $CURRENT_DIRECTORY;
